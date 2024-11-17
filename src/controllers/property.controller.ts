@@ -45,7 +45,17 @@ export class PropertyController {
     // property.inspector_id = this.user.id
     try {
       const newProperty = await this.propertyRepository.create(property);
-
+      let metrice = {
+        property_id: newProperty.id,
+        energy_efficiency_ratio: 0,
+        water_efficiency_ratio: 0,
+        indoor_air_quality_index: 0,
+        outdoor_air_quality_index: 0,
+        green_space_area: 0,
+        safety_rating: 0,
+        inspector_id: undefined
+      }
+      await this.propertySustainabilityMetricsRepository.create(metrice);
       return newProperty;
     } catch (error) {
       throw error;

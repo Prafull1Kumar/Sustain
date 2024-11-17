@@ -43,17 +43,6 @@ export class PropertyPropertySustainabilityMetricsController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<PropertySustainabilityMetrics>,
   ): Promise<PropertySustainabilityMetrics> {
-    let metrice = {
-      property_id: id,
-      energy_efficiency_ratio: 4,
-      water_efficiency_ratio: 4,
-      indoor_air_quality_index: 4,
-      outdoor_air_quality_index: 4,
-      green_space_area: 4,
-      safety_rating: 4,
-      inspector_id: undefined
-    }
-    await this.propertySustainabilityMetricsRepository.create(metrice);
     return this.propertyRepository.propertySustainabilityMetrics(id).get(filter);
   }
 

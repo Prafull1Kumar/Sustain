@@ -22,7 +22,6 @@ export class SustainApplication extends BootMixin(
   constructor(options: ApplicationConfig = {}) {
     super(options);
     dotenv.config({path: '.env'});
-
     // Set up the custom sequence
     this.sequence(MySequence);
 

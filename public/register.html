@@ -6,6 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - Sustainability Dashboard</title>
   <style>
+    :root {
+      --primary-color: #24B47E;
+      --primary-dark: #1A8B60;
+      --primary-light: #E8F7F1;
+      --text-dark: #2D3748;
+      --text-light: #718096;
+      --white: #FFFFFF;
+      --error-color: #FF5757;
+      --success-color: #31C48D;
+      --border-radius: 16px;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -13,206 +26,330 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 100%);
+      min-height: 100vh;
+      display: flex;
       padding: 2rem;
+    }
+
+    .register-page {
+      display: flex;
+      width: 100%;
+      max-width: 1400px;
+      margin: auto;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow-color);
+    }
+
+    .register-image {
+      flex: 1;
+      background: url('OpaqfpjQXZFSMhtTmb6x8.jpg') center/cover;
+      min-height: 600px;
+      display: none;
     }
 
     .register-container {
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 100%;
+      flex: 1.5;
+      padding: 3rem;
+      background: var(--white);
       max-width: 800px;
-      margin: 0 auto;
+      margin: auto;
     }
 
     .register-header {
-      text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      animation: fadeIn 0.6s ease-out forwards;
     }
 
     .register-header h1 {
-      color: #333;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .register-header p {
+      color: var(--text-light);
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
     }
 
     .form-group {
       margin-bottom: 1rem;
+      animation: fadeIn 0.6s ease-out forwards;
+      animation-delay: calc(var(--i) * 0.1s);
     }
 
     .form-group label {
       display: block;
+      color: var(--text-dark);
+      font-weight: 600;
       margin-bottom: 0.5rem;
-      color: #666;
-      font-weight: 500;
     }
 
     .form-group input {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      padding: 0.875rem 1rem;
+      border: 2px solid #E2E8F0;
+      border-radius: 10px;
       font-size: 1rem;
+      transition: all 0.3s ease;
+      background: var(--white);
     }
 
     .form-group input:focus {
       outline: none;
-      border-color: #4CAF50;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(36, 180, 126, 0.1);
     }
 
     .required::after {
       content: " *";
-      color: #ff0000;
+      color: var(--error-color);
     }
 
     .register-button {
       width: 100%;
-      padding: 0.75rem;
-      background-color: #4CAF50;
-      color: white;
+      padding: 1rem;
+      background: var(--primary-color);
+      color: var(--white);
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
       font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s;
-      margin-top: 1rem;
+      transition: all 0.3s ease;
+      margin-top: 2rem;
+      animation: fadeIn 0.6s ease-out forwards;
+      animation-delay: 0.8s;
     }
 
     .register-button:hover {
-      background-color: #45a049;
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(36, 180, 126, 0.15);
     }
 
     .register-footer {
-      margin-top: 1rem;
+      margin-top: 2rem;
       text-align: center;
+      animation: fadeIn 0.6s ease-out forwards;
+      animation-delay: 0.9s;
     }
 
     .register-footer a {
-      color: #4CAF50;
+      color: var(--primary-color);
       text-decoration: none;
+      font-weight: 600;
     }
 
     .register-footer a:hover {
       text-decoration: underline;
     }
 
-    .error-message {
-      color: #ff0000;
+    .error-message,
+    .success-message {
       font-size: 0.875rem;
       margin-top: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 8px;
       display: none;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .error-message {
+      color: var(--error-color);
+      background: rgba(255, 87, 87, 0.1);
     }
 
     .success-message {
-      color: #4CAF50;
-      font-size: 0.875rem;
-      margin-top: 0.5rem;
-      display: none;
+      color: var(--success-color);
+      background: rgba(49, 196, 141, 0.1);
     }
 
-    .loading {
-      opacity: 0.7;
-      pointer-events: none;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @media (max-width: 600px) {
+    @media (min-width: 1024px) {
+      .register-image {
+        display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
       body {
         padding: 1rem;
       }
 
-      .register-container {
-        padding: 1rem;
+      .form-grid {
+        grid-template-columns: 1fr;
       }
+
+      .register-container {
+        padding: 2rem;
+      }
+    }
+
+    .loading {
+      position: relative;
+      pointer-events: none;
+    }
+
+    .loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+    }
+
+    /* Progress indicator animation */
+    .form-progress {
+      height: 4px;
+      background: var(--primary-light);
+      margin: 2rem 0;
+      border-radius: 2px;
+      overflow: hidden;
+      animation: fadeIn 0.6s ease-out forwards;
+      animation-delay: 0.7s;
+    }
+
+    .form-progress-bar {
+      height: 100%;
+      background: var(--primary-color);
+      width: 0;
+      transition: width 0.3s ease;
     }
   </style>
 </head>
 
 <body>
-  <div class="register-container">
-    <div class="register-header">
-      <h1>Create Account</h1>
-      <p>Fill in your details to register</p>
-    </div>
-
-    <form id="registerForm" onsubmit="handleRegister(event)">
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="first_name" class="required">First Name</label>
-          <input type="text" id="first_name" name="first_name" required placeholder="Enter your first name">
-        </div>
-
-        <div class="form-group">
-          <label for="last_name" class="required">Last Name</label>
-          <input type="text" id="last_name" name="last_name" required placeholder="Enter your last name">
-        </div>
-
-        <div class="form-group">
-          <label for="email" class="required">Email</label>
-          <input type="email" id="email" name="email" required placeholder="Enter your email">
-        </div>
-
-        <div class="form-group">
-          <label for="phone" class="required">Phone</label>
-          <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
-        </div>
-
-        <div class="form-group">
-          <label for="designation" class="required">Designation</label>
-          <input type="text" id="designation" name="designation" required placeholder="Enter your designation">
-        </div>
-
-        <div class="form-group">
-          <label for="password" class="required">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Create a password" minlength="8">
-        </div>
-
-        <div class="form-group">
-          <label for="address_line_1" class="required">Address Line 1</label>
-          <input type="text" id="address_line_1" name="address_line_1" required placeholder="Enter your street address">
-        </div>
-
-        <div class="form-group">
-          <label for="address_line_2">Address Line 2</label>
-          <input type="text" id="address_line_2" name="address_line_2" placeholder="Apartment, suite, etc. (optional)">
-        </div>
-
-        <div class="form-group">
-          <label for="city" class="required">City</label>
-          <input type="text" id="city" name="city" required placeholder="Enter your city">
-        </div>
-
-        <div class="form-group">
-          <label for="country" class="required">Country</label>
-          <input type="text" id="country" name="country" required placeholder="Enter your country">
-        </div>
-
-        <div class="form-group">
-          <label for="zip_code" class="required">ZIP Code</label>
-          <input type="text" id="zip_code" name="zip_code" required placeholder="Enter your ZIP code">
-        </div>
+  <div class="register-page">
+    <div class="register-image"></div>
+    <div class="register-container">
+      <div class="register-header">
+        <h1>Join Our Sustainable Community</h1>
+        <p>Create your account to start tracking your environmental impact</p>
       </div>
 
-      <div id="errorMessage" class="error-message"></div>
-      <div id="successMessage" class="success-message"></div>
+      <div class="form-progress">
+        <div class="form-progress-bar" id="progressBar"></div>
+      </div>
 
-      <button type="submit" class="register-button" id="registerButton">Create Account</button>
-    </form>
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-grid">
+          <div class="form-group" style="--i:1">
+            <label for="first_name" class="required">First Name</label>
+            <input type="text" id="first_name" name="first_name" required placeholder="Enter your first name"
+              autocomplete="given-name">
+          </div>
 
-    <div class="register-footer">
-      <p>Already have an account? <a href="/login.html">Login</a></p>
+          <div class="form-group" style="--i:2">
+            <label for="last_name" class="required">Last Name</label>
+            <input type="text" id="last_name" name="last_name" required placeholder="Enter your last name"
+              autocomplete="family-name">
+          </div>
+
+          <div class="form-group" style="--i:3">
+            <label for="email" class="required">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email" autocomplete="email">
+          </div>
+
+          <div class="form-group" style="--i:4">
+            <label for="phone" class="required">Phone</label>
+            <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number" autocomplete="tel">
+          </div>
+
+          <div class="form-group" style="--i:5">
+            <label for="designation" class="required">Designation</label>
+            <input type="text" id="designation" name="designation" required placeholder="Enter your designation">
+          </div>
+
+          <div class="form-group" style="--i:6">
+            <label for="password" class="required">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Create a password" minlength="8"
+              autocomplete="new-password">
+          </div>
+
+          <div class="form-group" style="--i:7">
+            <label for="address_line_1" class="required">Address Line 1</label>
+            <input type="text" id="address_line_1" name="address_line_1" required
+              placeholder="Enter your street address" autocomplete="address-line1">
+          </div>
+
+          <div class="form-group" style="--i:8">
+            <label for="address_line_2">Address Line 2</label>
+            <input type="text" id="address_line_2" name="address_line_2" placeholder="Apartment, suite, etc. (optional)"
+              autocomplete="address-line2">
+          </div>
+
+          <div class="form-group" style="--i:9">
+            <label for="city" class="required">City</label>
+            <input type="text" id="city" name="city" required placeholder="Enter your city"
+              autocomplete="address-level2">
+          </div>
+
+          <div class="form-group" style="--i:10">
+            <label for="country" class="required">Country</label>
+            <input type="text" id="country" name="country" required placeholder="Enter your country"
+              autocomplete="country">
+          </div>
+
+          <div class="form-group" style="--i:11">
+            <label for="zip_code" class="required">ZIP Code</label>
+            <input type="text" id="zip_code" name="zip_code" required placeholder="Enter your ZIP code"
+              autocomplete="postal-code">
+          </div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <button type="submit" class="register-button" id="registerButton">
+          Create Account
+        </button>
+      </form>
+
+      <div class="register-footer">
+        <p>Already have an account? <a href="/login.html">Login</a></p>
+      </div>
     </div>
   </div>
 
   <script>
+    // Update progress bar based on form completion
+    function updateProgress() {
+      const form = document.getElementById('registerForm');
+      const inputs = form.querySelectorAll('input[required]');
+      const filledInputs = Array.from(inputs).filter(input => input.value.trim() !== '');
+      const progress = (filledInputs.length / inputs.length) * 100;
+
+      document.getElementById('progressBar').style.width = `${progress}%`;
+    }
+
+    // Add input listeners for progress bar
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', updateProgress);
+    });
+
     async function handleRegister(event) {
       event.preventDefault();
 

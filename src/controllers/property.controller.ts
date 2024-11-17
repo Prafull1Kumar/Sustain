@@ -43,9 +43,14 @@ export class PropertyController {
     property: any,
   ): Promise<Property> {
     // property.inspector_id = this.user.id
-    const newProperty = await this.propertyRepository.create(property);
-    await this.propertySustainabilityMetricsRepository.create({property_id: newProperty.id});
-    return newProperty;
+    try {
+      const newProperty = await this.propertyRepository.create(property);
+
+      return newProperty;
+    } catch (error) {
+      throw error;
+    }
+
   }
 
   @get('/properties/count')
@@ -57,6 +62,42 @@ export class PropertyController {
     @param.where(Property) where?: Where<Property>,
   ): Promise<Count> {
     return this.propertyRepository.count(where);
+  }
+
+  calculateDominantFactor(properties: Property[]): any[] {
+    return properties.map(property => {
+      const metrics = property.propertySustainabilityMetrics;
+      if (!metrics) {
+        return {
+          ...property,
+          factor: 'Renewable Energy'
+        };
+      }
+      // Calculate average for each factor
+      const factorScores = {
+        'Renewable Energy': (metrics.energy_efficiency_ratio + metrics.water_efficiency_ratio) / 2,
+        'Embodied Carbon': (metrics.indoor_air_quality_index + metrics.outdoor_air_quality_index) / 2,
+        'Biodiversity': metrics.green_space_area,
+        'Social Value': metrics.safety_rating
+      };
+
+      // Find the highest scoring factor
+      let maxScore = -1;
+      let dominantFactor = '';
+
+      for (const [factor, score] of Object.entries(factorScores)) {
+        if (score > maxScore) {
+          maxScore = score;
+          dominantFactor = factor;
+        }
+      }
+
+      // Return property with added factor
+      return {
+        ...property,
+        factor: dominantFactor
+      };
+    });
   }
 
   @get('/properties')
@@ -74,7 +115,16 @@ export class PropertyController {
   async find(
     @param.filter(Property) filter?: Filter<Property>,
   ): Promise<Property[]> {
-    return this.propertyRepository.find(filter);
+    // let properties = await this.propertyRepository.find({include: ['propertySustainabilityMetrics']});
+    let properties = await this.propertyRepository.find({
+      include: ['propertySustainabilityMetrics']
+    });
+
+    // Add factor to each property
+    const propertiesWithFactors = this.calculateDominantFactor(properties);
+
+    return propertiesWithFactors;
+    // return properties;
   }
 
   @patch('/properties')

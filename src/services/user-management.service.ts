@@ -61,16 +61,16 @@ export class UserManagementService {
     }
 
     // Send welcome email unless explicitly disabled
-    if (dontSendEmail === false) {
-      // Asynchronously invoke welcome email Lambda function
-      this.awsLambdaService.invokeFunction(AWS_LAMBDA_FUNCTIONS.welcome, {})
-        .then((data) => {
-          console.log(data);  // Log success response
-        })
-        .catch((error) => {
-          console.error(error);  // Log any errors in email sending
-        });
-    }
+    // if (dontSendEmail === false) {
+    //   // Asynchronously invoke welcome email Lambda function
+    //   this.awsLambdaService.invokeFunction(AWS_LAMBDA_FUNCTIONS.welcome, {})
+    //     .then((data) => {
+    //       console.log(data);  // Log success response
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);  // Log any errors in email sending
+    //     });
+    // }
 
     // Return the user credential object
     return user_credential;

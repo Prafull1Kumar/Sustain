@@ -12,8 +12,7 @@ module.exports = {
         DB_USER: 'postgres',
         DB_PASSWORD: 'temp#123456!12',
         DB_DATABASE: 'sustain',
-        DB_SCHEMA: 'public',
-        HOST: '0.0.0.0'
+        DB_SCHEMA: 'public'
       }
     }
   ]
